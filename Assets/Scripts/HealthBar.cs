@@ -6,32 +6,40 @@ public class HealthBar : MonoBehaviour
 {
     [Header("Values")]
     [SerializeField] private float _damage;
+    [SerializeField] private float _healing;
     [SerializeField] private float _health;
+    [SerializeField] private float _maxDelta;
 
     private Slider _healthBar;
-    private float _targetValue;
 
     private void Start()
     {
         _healthBar = GetComponent<Slider>();
-        _targetValue = _healthBar.value;
+        _healthBar.maxValue = _health;
+        _healthBar.value = _health;
     }
 
     private void Update()
     {
-        if (_healthBar.value != _targetValue)
-            _healthBar.value = Mathf.MoveTowards(_healthBar.value, _targetValue, 0.1f);
+        if (_healthBar.value != _health)
+        {
+            _healthBar.value = Mathf.MoveTowards(_healthBar.value, _health, _maxDelta);
+        }
     }
 
     public void TakeDamage()
     {
-        if (_healthBar.value > _healthBar.minValue)
-            _targetValue -= _damage;
+        if (_health > _healthBar.minValue)
+        {
+            _health -= _damage;
+        }
     }
 
     public void TakeHealth()
     {
-        if (_healthBar.value < _healthBar.maxValue)
-            _targetValue += _health;
+        if (_health < _healthBar.maxValue)
+        {
+            _health += _healing;        
+        }
     }
 }
