@@ -7,39 +7,42 @@ public class HealthBar : MonoBehaviour
     [Header("Values")]
     [SerializeField] private float _damage;
     [SerializeField] private float _healing;
-    [SerializeField] private float _health;
-    [SerializeField] private float _maxDelta;
+    [SerializeField] private float _speed;
+    [SerializeField] private float _minHealth;
+    [SerializeField] private float _maxHealth;
 
     private Slider _healthBar;
+    private float _currentHealth;
 
     private void Start()
     {
         _healthBar = GetComponent<Slider>();
-        _healthBar.maxValue = _health;
-        _healthBar.value = _health;
+        _healthBar.maxValue = _maxHealth;
+        _healthBar.value = _maxHealth;
+        _currentHealth = _maxHealth;
     }
 
     private void Update()
     {
-        if (_healthBar.value != _health)
+        if (_healthBar.value != _currentHealth)
         {
-            _healthBar.value = Mathf.MoveTowards(_healthBar.value, _health, _maxDelta);
+            _healthBar.value = Mathf.MoveTowards(_healthBar.value, _currentHealth, Time.deltaTime * _speed);
         }
     }
 
     public void TakeDamage()
     {
-        if (_health > _healthBar.minValue)
+        if (_currentHealth > _minHealth)
         {
-            _health -= _damage;
+            _currentHealth -= _damage;
         }
     }
 
     public void TakeHealth()
     {
-        if (_health < _healthBar.maxValue)
+        if (_currentHealth < _maxHealth)
         {
-            _health += _healing;        
+            _currentHealth += _healing;        
         }
     }
 }
