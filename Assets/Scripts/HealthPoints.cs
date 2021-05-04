@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
-[RequireComponent(typeof(Text))]
 public class HealthPoints : MonoBehaviour
 {
     [Header("Values")]
@@ -13,7 +11,6 @@ public class HealthPoints : MonoBehaviour
 
     [SerializeField] private UnityEvent _healthChanged;
 
-    private Text _points;
     private float _currentHealth;
     
     public float Health => _currentHealth;
@@ -21,9 +18,7 @@ public class HealthPoints : MonoBehaviour
 
     private void Start()
     {
-        _points = GetComponent<Text>();
         _currentHealth = _maxHealth;
-        _points.text = $"{_maxHealth}";
     }
 
     public void TakeDamage()
@@ -33,7 +28,6 @@ public class HealthPoints : MonoBehaviour
             _currentHealth -= _damage;
         }
 
-        _points.text = $"{_currentHealth}";
         _healthChanged.Invoke();
     }
 
@@ -44,7 +38,6 @@ public class HealthPoints : MonoBehaviour
             _currentHealth += _healing;
         }
 
-        _points.text = $"{_currentHealth}";
         _healthChanged.Invoke();
     }
 }
