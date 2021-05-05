@@ -14,45 +14,39 @@ public class HealthBar : MonoBehaviour
     private Slider _healthBar;
     private Text _points;
     private float _maxHealth;
-    private float _currentHealth;
 
     private void Start()
     {
         _healthBar = GetComponent<Slider>();
         _points = GetComponent<Text>();
-        _maxHealth = _healthPoints.GetComponent<HealthPoints>().MaxHealth;
+        _maxHealth = _healthPoints.GetComponent<HealthPoints>().MaxHealth;        
         SetMaxValuesHealth();
     }
 
-    private IEnumerator MoveHandle(WaitForFixedUpdate waitForFixedUpdate)
+    private IEnumerator MoveHandle(WaitForFixedUpdate waitForFixedUpdate, float healthPoints)
     {
-        while (_healthBar.value != _currentHealth)
+        while (_healthBar.value != healthPoints)
         {
-            _healthBar.value = Mathf.MoveTowards(_healthBar.value, _currentHealth, Time.deltaTime * _speed);
-            _points.text = $"{_currentHealth}";
+            _healthBar.value = Mathf.MoveTowards(_healthBar.value, healthPoints, Time.deltaTime * _speed);
+            _points.text = $"{healthPoints}";
             yield return waitForFixedUpdate;
         }
 
-        StopCoroutine(MoveHandle(waitForFixedUpdate));
+        StopCoroutine(MoveHandle(waitForFixedUpdate, healthPoints));
     }
     
     private void SetMaxValuesHealth()
     {
         _healthBar.maxValue = _maxHealth;
         _healthBar.value = _maxHealth;
-        _currentHealth = _maxHealth;
         _points.text = $"{_maxHealth}";
     }
 
-    public void SetHealthPoints()
-    {
-        _currentHealth = _healthPoints.GetComponent<HealthPoints>().Health;
-    }
-
-    public void SetHandlePosition()
+    public void SetHandlePosition(HealthPoints health)
     {
         var waitForFrame = new WaitForFixedUpdate();
+        float healthPoints = health.Health;
 
-        StartCoroutine(MoveHandle(waitForFrame));     
+        StartCoroutine(MoveHandle(waitForFrame, healthPoints));     
     }
 }
