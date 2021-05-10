@@ -11,7 +11,7 @@ public class HealthBar : MonoBehaviour
     [Header("Value of speed")]
     [SerializeField] private float _speed;
 
-    private WaitForFixedUpdate waitForFixed;
+    private WaitForFixedUpdate _waitForFixed;
     private HealthPoints _currentHealth;
     private Slider _healthBar;
     private Text _points;
@@ -23,7 +23,7 @@ public class HealthBar : MonoBehaviour
         _healthBar = GetComponent<Slider>();
         _currentHealth = _healthPoints.GetComponent<HealthPoints>();
         _maxHealth = _currentHealth.MaxHealth;
-        waitForFixed = new WaitForFixedUpdate();
+        _waitForFixed = new WaitForFixedUpdate();
 
         SetMaxValuesHealth();
     }
@@ -37,7 +37,6 @@ public class HealthBar : MonoBehaviour
         }
 
         _points.text = $"{_currentHealth.Health}";
-        StopCoroutine(MoveHandle(waitForFixedUpdate));
     }
     
     private void SetMaxValuesHealth()
@@ -49,6 +48,6 @@ public class HealthBar : MonoBehaviour
 
     public void ActivateEvent()
     {
-        StartCoroutine(MoveHandle(waitForFixed));     
+        StartCoroutine(MoveHandle(_waitForFixed));     
     }
 }
